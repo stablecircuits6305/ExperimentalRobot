@@ -94,6 +94,10 @@ public final class Values {
 		return fuzzyCompare(first, second, calcTolerance(bits));
 	}
 	
+	public static int fuzzyCompare(double first, double second) {
+		return fuzzyCompare(first, second, DEFAULT_NUMBER_OF_BITS);
+	}
+	
 	
 	
 }
