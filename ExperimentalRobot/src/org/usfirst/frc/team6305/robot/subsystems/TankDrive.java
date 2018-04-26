@@ -1,6 +1,7 @@
 package org.usfirst.frc.team6305.robot.subsystems;
 
 import org.usfirst.frc.team6305.robot.RobotMap;
+
 import org.usfirst.frc.team6305.robot.functions.DoubleToDoubleFunction;
 import org.usfirst.frc.team6305.robot.util.Values;
 
@@ -17,9 +18,7 @@ public class TankDrive extends Subsystem {
 	public static final double max = 1;
 	public static final DoubleToDoubleFunction DEFAULT_SPEED_LIMITER = Values.symmetricLimiter(min, max);
 	
-	private static final double SENSITIVITY_HIGH = .75;
-	private static final double SENSITIVITY_LOW = .75;
-	private static final double HALF_PI = Math.PI/2;
+
 	private static final double SENSITIVITY_TURN = 1.0;
 	
 	private final Spark frontLeft = new Spark(RobotMap.frontLeft);
@@ -27,10 +26,11 @@ public class TankDrive extends Subsystem {
 	private final Spark backLeft = new Spark(RobotMap.backLeft);
 	private final Spark backRight = new Spark(RobotMap.backRight);
 	
+	public static TankDrive instance;
+	
 	private DoubleToDoubleFunction speedLimiter;
 	
 	private double quickStopAccumulator = 0;
-	private double oldWheel = 0;
 	
 	public void setLeftSpeed(double leftSpeed) {
 		frontLeft.set(-leftSpeed);
@@ -42,9 +42,13 @@ public class TankDrive extends Subsystem {
 		backRight.set(rightSpeed);
 	}
 	
+	public void wheel(double wheel) {
+		frontRight.set(wheel);
+		frontLeft.set(-wheel);
+	}
+	
 	public void wheelThrottle(double throttle, double wheel, boolean isQuickTurn) {
-		wheel = speedLimiter.applyAsDouble(wheel);
-		throttle = speedLimiter.applyAsDouble(throttle);
+		
 		
 		double overPower;
 		double angularPower;
@@ -88,11 +92,17 @@ public class TankDrive extends Subsystem {
 		tank.setRightSpeed(rightPwm);
 	}
 	
-	public void sendData() {
+	public void sendSparkData() {
 		double frontLeftSpeed = frontLeft.get();
 		double frontRightSpeed = frontRight.get();
 		
+		SmartDashboard.putNumber("Front Left", frontLeftSpeed);
+		SmartDashboard.putNumber("Front Right", frontRightSpeed);
 		
+	}
+	
+	public static TankDrive getInstance() {
+		return instance;
 		
 	}
 	

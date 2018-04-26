@@ -8,11 +8,14 @@
 package org.usfirst.frc.team6305.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team6305.robot.commands.ExampleCommand;
+import org.usfirst.frc.team6305.robot.commands.WheelTest;
+//import org.usfirst.frc.team6305.robot.commands.WheelTest;
 import org.usfirst.frc.team6305.robot.subsystems.ExampleSubsystem;
 
 /**
@@ -28,6 +31,7 @@ public class Robot extends TimedRobot {
 	public static OI m_oi;
 
 	Command m_autonomousCommand;
+	Command teleopDrive;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 
 	/**
@@ -36,6 +40,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
+		teleopDrive = new WheelTest();
 		m_oi = new OI();
 		m_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
@@ -95,6 +100,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
+		
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
@@ -102,6 +108,7 @@ public class Robot extends TimedRobot {
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.cancel();
 		}
+		teleopDrive.start();
 	}
 
 	/**
@@ -109,6 +116,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		
 		Scheduler.getInstance().run();
 	}
 
@@ -117,5 +125,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void testPeriodic() {
+		System.out.println(m_oi.wheel.getX());
+	
 	}
 }
