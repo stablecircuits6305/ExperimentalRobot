@@ -49,47 +49,62 @@ public class TankDrive extends Subsystem {
 	
 	public void wheelThrottle(double throttle, double wheel, boolean isQuickTurn) {
 		
-		
-		double overPower;
-		double angularPower;
-		
-		if(isQuickTurn) {
-			if(Math.abs(throttle) < min) {
-				double alpha = .1;
-				quickStopAccumulator = (1- alpha) * quickStopAccumulator + alpha * Values.symmetricLimit(0, wheel, 1) * 2;
-			}
-			overPower = 1.0;
-			angularPower = wheel;
+		if(isQuickTurn){
+			frontLeft.set(throttle + wheel);
+			backLeft.set(throttle + wheel);
+			frontRight.set(throttle-wheel);
+			backRight.set(throttle-wheel)
+
 		}
-			else {
-				overPower = 0;
-				angularPower = Math.abs(throttle) * wheel * SENSITIVITY_TURN - quickStopAccumulator;
-				if(quickStopAccumulator > 1) quickStopAccumulator -= 1;
-				else if(quickStopAccumulator < -1) quickStopAccumulator += 1;
-				else quickStopAccumulator = 0.0;
-			}
-		double rightPwm = throttle - angularPower;
-		double leftPwm = throttle + angularPower;
-		if(leftPwm > 1.0) {
-			rightPwm -= overPower * (leftPwm - 1);
-			leftPwm = 1.0;
-		}
-		else if(rightPwm > 1.0) {
-			leftPwm -= overPower * (rightPwm -1);
-			rightPwm = 1.0;
-		}
-		else if(leftPwm < -1.0) {
-			rightPwm += overPower * (-1 - leftPwm);
-			leftPwm = -1.0;
-		}
-		else if(rightPwm < -1.0) {
-			leftPwm += overPower * (-1 - rightPwm);
-			rightPwm = -1.0;
+
+		else{
+			frontLeft.set(throttle + abs(throttle) * wheel);
+			backLeft.set(throttle + abs(throttle) * wheel);
+			frontRight.set(throttle - abs(throttle) * wheel);
+			backRight.set(throttle - abs(throttle) * wheel); 
 		}
 		
-		TankDrive tank = new TankDrive();
-		tank.setLeftSpeed(leftPwm);
-		tank.setRightSpeed(rightPwm);
+		
+// 		double overPower;
+// 		double angularPower;
+		
+// 		if(isQuickTurn) {
+// 			if(Math.abs(throttle) < min) {
+// 				double alpha = .1;
+// 				quickStopAccumulator = (1- alpha) * quickStopAccumulator + alpha * Values.symmetricLimit(0, wheel, 1) * 2;
+// 			}
+// 			overPower = 1.0;
+// 			angularPower = wheel;
+// 		}
+// 			else {
+// 				overPower = 0;
+// 				angularPower = Math.abs(throttle) * wheel * SENSITIVITY_TURN - quickStopAccumulator;
+// 				if(quickStopAccumulator > 1) quickStopAccumulator -= 1;
+// 				else if(quickStopAccumulator < -1) quickStopAccumulator += 1;
+// 				else quickStopAccumulator = 0.0;
+// 			}
+// 		double rightPwm = throttle - angularPower;
+// 		double leftPwm = throttle + angularPower;
+// 		if(leftPwm > 1.0) {
+// 			rightPwm -= overPower * (leftPwm - 1);
+// 			leftPwm = 1.0;
+// 		}
+// 		else if(rightPwm > 1.0) {
+// 			leftPwm -= overPower * (rightPwm -1);
+// 			rightPwm = 1.0;
+// 		}
+// 		else if(leftPwm < -1.0) {
+// 			rightPwm += overPower * (-1 - leftPwm);
+// 			leftPwm = -1.0;
+// 		}
+// 		else if(rightPwm < -1.0) {
+// 			leftPwm += overPower * (-1 - rightPwm);
+// 			rightPwm = -1.0;
+// 		}
+		
+// 		TankDrive tank = new TankDrive();
+// 		tank.setLeftSpeed(leftPwm);
+// 		tank.setRightSpeed(rightPwm);
 	}
 	
 	public void sendSparkData() {
