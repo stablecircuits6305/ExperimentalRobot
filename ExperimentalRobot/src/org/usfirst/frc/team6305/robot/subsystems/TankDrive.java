@@ -33,6 +33,7 @@ public class TankDrive extends Subsystem {
 	
 	private double quickStopAccumulator = 0;
 	
+	
 	public void setLeftSpeed(double leftSpeed) {
 		frontLeft.set(-leftSpeed);
 		backLeft.set(-leftSpeed);
